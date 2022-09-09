@@ -1,7 +1,7 @@
-package g3.main;
+package g3.code;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import g3.main.gametasks.Autonomous;
+import g3.code.gametasks.Autonomous;
 import g3.utils.Task;
 
 public class Game extends TimedRobot {

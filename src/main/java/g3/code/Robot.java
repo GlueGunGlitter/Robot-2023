@@ -1,4 +1,4 @@
-package g3.main;
+package g3.code;
 
 public class Robot {
 }
