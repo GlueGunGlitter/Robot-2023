@@ -1,6 +1,6 @@
 package g3.utils;
 
-public abstract class Task implements Runnable{
+public abstract class Task{
 
     private boolean stopped = false;
 
@@ -16,11 +16,17 @@ public abstract class Task implements Runnable{
     public Task() {}
 
     public void start() {
-        Thread thread = new Thread(this);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                run();
+            }
+        });
+
         thread.start();
     }
 
-    public void run() {
+    private void run() {
         timer.reset();
 
         init();

@@ -1,12 +1,12 @@
 package g3.code;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import g3.code.gametasks.Autonomous;
 import g3.utils.Task;
 
 public class Game extends TimedRobot {
 
-    Task autonomous = new Autonomous();
+    Robot robot = new Robot();
+    Task autonomous = robot.getAutonomousTask();
 
     @Override
     public void robotInit() {}
@@ -14,12 +14,6 @@ public class Game extends TimedRobot {
     @Override
     public void robotPeriodic() {
     }
-
-    @Override
-    public void disabledInit() {}
-
-    @Override
-    public void disabledPeriodic() {}
 
     @Override
     public void autonomousInit() {
@@ -37,6 +31,12 @@ public class Game extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {}
+
+    @Override
+    public void disabledInit() {}
+
+    @Override
+    public void disabledPeriodic() {}
 
     @Override
     public void testInit() {}
