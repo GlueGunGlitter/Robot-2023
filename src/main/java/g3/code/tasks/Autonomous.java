@@ -1,4 +1,4 @@
-package g3.code.task;
+package g3.code.tasks;
 
 import g3.utils.Task;
 
