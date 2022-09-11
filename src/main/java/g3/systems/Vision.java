@@ -1,4 +1,4 @@
-package g3.code.systems;
+package g3.systems;
 
 public class Vision {
 }

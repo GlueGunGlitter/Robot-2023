@@ -19,14 +19,14 @@ public abstract class Task{
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                run();
+                handle();
             }
         });
 
         thread.start();
     }
 
-    private void run() {
+    private void handle() {
         timer.reset();
 
         init();

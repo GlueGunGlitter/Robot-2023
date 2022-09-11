@@ -1,4 +1,4 @@
-package g3.code;
+package g3;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import g3.utils.Task;

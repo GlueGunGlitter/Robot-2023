@@ -1,6 +1,6 @@
-package g3.code;
+package g3;
 
-import g3.code.tasks.Autonomous;
+import g3.tasks.Autonomous;
 import g3.utils.Task;
 
 public class Robot {
