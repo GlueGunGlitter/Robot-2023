@@ -41,5 +41,7 @@ public class Game extends TimedRobot {
     public void testInit() {}
 
     @Override
-    public void testPeriodic() {}
+    public void testPeriodic() {
+
+    }
 }

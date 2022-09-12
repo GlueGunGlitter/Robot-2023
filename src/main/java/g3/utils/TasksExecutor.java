@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TasksExecutor {
     private List<Task> taskList = new ArrayList<Task>();
-
+    public Timer timer = new Timer();
     private Double taskCurrentTime;
 
     public void addTask(Task task) {
@@ -13,16 +13,16 @@ public class TasksExecutor {
     }
 
     public void executeAll() {
-        for (Task task:taskList){
+        for (Task task:taskList) {
+
             if (!task.initialized) {
-                task.timer.reset();
                 task.init();
 
                 task.initialized = true;
             }
 
             if (!task.stopped && !task.isFinished()) {
-                taskCurrentTime = task.timer.getTime();
+                taskCurrentTime = timer.getTime();
 
                 if (task.lastRunTime + task.runIntervalSec <= taskCurrentTime) {
                     task.execute();

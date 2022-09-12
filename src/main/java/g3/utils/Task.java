@@ -4,7 +4,6 @@ public abstract class Task{
 
     public boolean initialized = false;
     public boolean stopped = false;
-    public Timer timer = new Timer();
     public Double runIntervalSec = 0d;
     public Double lastRunTime = 0d;
 
