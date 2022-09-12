@@ -2,6 +2,8 @@ package g3.systems;
 
 public class Vision {
 
+    PhotonCamera camera = new PhotonCamera("photonvision");
+
     private final double OBJECT_SIZE_MM = 0d;
     private final double FOCAL_LENGTH = 0d;
 
