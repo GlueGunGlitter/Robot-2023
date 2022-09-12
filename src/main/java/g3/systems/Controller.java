@@ -13,12 +13,12 @@ public class Controller {
         return controller.getRawButton(button);
     }
 
-    public Double[] getStickLeft() {
-        return new Double[] {stickLeft.getRawAxis(0), stickLeft.getRawAxis(1)};
+    public double[] getStickLeft() {
+        return new double[] {stickLeft.getRawAxis(0), stickLeft.getRawAxis(1)};
     }
 
-    public Double[] getStickRight() {
-        return new Double[] {stickRight.getRawAxis(0), stickRight.getRawAxis(1)};
+    public double[] getStickRight() {
+        return new double[] {stickRight.getRawAxis(0), stickRight.getRawAxis(1)};
     }
 
     public double stickControlFunc(double rawAxis) {
