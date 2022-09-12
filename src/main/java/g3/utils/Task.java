@@ -2,47 +2,17 @@ package g3.utils;
 
 public abstract class Task{
 
-    private boolean stopped = false;
-
-    private Timer timer = new Timer();
-    private Double runIntervalSec = 0d;
-    private Double lastRunTime = 0d;
-    private Double currentTime;
+    public boolean initialized = false;
+    public boolean stopped = false;
+    public Timer timer = new Timer();
+    public Double runIntervalSec = 0d;
+    public Double lastRunTime = 0d;
 
     public Task(Double runIntervalSec) {
         this.runIntervalSec = runIntervalSec;
     }
 
-    public Task() {}
-
-    public void start() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                handle();
-            }
-        });
-
-        thread.start();
-    }
-
-    private void handle() {
-        timer.reset();
-
-        init();
-
-        execute();
-        while (!stopped && !isFinished()) {
-            currentTime = timer.getTime();
-
-            if ( lastRunTime+runIntervalSec <= currentTime) {
-                execute();
-
-                lastRunTime = currentTime;
-            }
-        }
-
-        end();
+    public Task() {
     }
 
     public abstract void init();

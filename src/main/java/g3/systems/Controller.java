@@ -21,7 +21,7 @@ public class Controller {
         return new Double[] {stickRight.getRawAxis(0), stickRight.getRawAxis(1)};
     }
 
-    public double velocityControlFunc(double rawAxis) {
-
+    public double stickControlFunc(double rawAxis) {
+        return rawAxis;
     }
 }
