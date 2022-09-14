@@ -1,5 +1,6 @@
 package g3.systems;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -7,19 +8,26 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 
 public class Drive {
 
-    private final int left1Chanel = 0;
-    private final int left2Chanel = 1;
-    private final int right1Chanel = 2;
-    private final int right2Chanel = 3;
+    private static final int left1Channel = 0;
+    private static final int left2Channel = 1;
+    private static final int right1Channel = 2;
+    private static final int right2Channel = 3;
 
-    private final boolean left1Inverted = false;
-    private final boolean left2Inverted = false;
-    private final boolean right1Inverted = false;
-    private final boolean right2Inverted = false;
+    private static final boolean left1Inverted = false;
+    private static final boolean left2Inverted = false;
+    private static final boolean right1Inverted = false;
+    private static final boolean right2Inverted = false;
 
-    private final boolean safetyEnabled = true;
-    private final double safetyExpiration = 0.1;
-    private final double driveMaxOutput = 1;
+    private static final boolean safetyEnabled = true;
+    private static final double safetyExpiration = 0.1;
+    private static final double driveMaxOutput = 1;
+
+    public static final double ksVolts = 0;
+    public static final double kvVoltSecondsPerMeter = 0;
+    public static final double kaVoltSecondsSquaredPerMeter = 0;
+    public static final double kMaxSpeedMetersPerSecond = 0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+    public static final DifferentialDriveKinematics kDriveKinematics = null;
 
     private Talon left1;
     private Victor left2;
@@ -36,16 +44,16 @@ public class Drive {
     }
 
     public void ConfigureMotors() {
-        left1 = new Talon(left1Chanel);
+        left1 = new Talon(left1Channel);
         left1.setInverted(left1Inverted);
-        left2 = new Victor(left2Chanel);
+        left2 = new Victor(left2Channel);
         left2.setInverted(left2Inverted);
 
         leftMotors = new MotorControllerGroup(left1, left2);
 
-        right1 = new Victor(right1Chanel);
+        right1 = new Victor(right1Channel);
         right1.setInverted(right1Inverted);
-        right2 = new Victor(right2Chanel);
+        right2 = new Victor(right2Channel);
         right2.setInverted(right2Inverted);
 
         rightMotors = new MotorControllerGroup(right1, right2);
