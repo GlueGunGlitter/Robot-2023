@@ -25,7 +25,7 @@ public class ControllerDrive extends Task {
         stickLeft = controller.getStickLeft();
         stickRight = controller.getStickRight();
 
-        driveSystem.driveTank(stickLeft[1], stickRight[1]);
+        driveSystem.driveTank(controller.stickControlFunc(stickLeft[1]), controller.stickControlFunc(stickRight[1]));
     }
 
     @Override
