@@ -1,14 +1,20 @@
 package g3;
 
-import g3.tasks.Autonomous;
-import g3.utils.Task;
+import g3.commands.Autonomous;
+import g3.subsystems.Controller;
+import g3.subsystems.Drive;
 
-public class Robot {
+public final class Robot {
 
-    private Task autoTask = new Autonomous();
+    public static final Drive Drive = new Drive();
+    public static final Controller Controller = new Controller();
 
-    public Task getAutonomousTask() {
+    private static final Autonomous autoCommand = new Autonomous();
+
+    private Robot() {}
+
+    public static Autonomous getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return autoTask;
+        return autoCommand;
     }
 }

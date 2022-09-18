@@ -1,22 +1,24 @@
 package g3;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import g3.utils.Task;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import g3.commands.Autonomous;
 
 public class Game extends TimedRobot {
 
-    Robot robot = new Robot();
-    Task autonomous = robot.getAutonomousTask();
+    Autonomous autonomous = Robot.getAutonomousCommand();
 
     @Override
     public void robotInit() {}
 
     @Override
     public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
+        autonomous.schedule();
     }
 
     @Override
