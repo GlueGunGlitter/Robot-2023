@@ -24,7 +24,7 @@ public class Trajectory {
 
 
     public static edu.wpi.first.math.trajectory.Trajectory getTrajectoryFromFile(String fileName) {
-        return PathPlanner.loadPath("Example Path", 1/ Drive.kvVoltSecondsPerMeter, Drive.kMaxAccelerationMetersPerSecondSquared);
+        return PathPlanner.loadPath(fileName, 1/ Drive.kvVoltSecondsPerMeter, Drive.kMaxAccelerationMetersPerSecondSquared);
     }
 
     public static SequentialCommandGroup getCommand(edu.wpi.first.math.trajectory.Trajectory trajectory) {
