@@ -1,5 +1,7 @@
 package g3.subsystems;
 
+import org.photonvision.PhotonCamera;
+
 public class Vision {
 
     PhotonCamera camera = new PhotonCamera("photonvision");

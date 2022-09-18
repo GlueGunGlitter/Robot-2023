@@ -56,22 +56,22 @@ public class Drive extends SubsystemBase {
     private static Victor right2 = new Victor(right2Channel);
     private static MotorControllerGroup rightMotors = new MotorControllerGroup(right1, right2);
 
-    private static final DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
+    private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    private static final Encoder leftEncoder =
+    private Encoder leftEncoder =
             new Encoder(
                     leftEncoderPorts[0],
                     leftEncoderPorts[1],
                     leftEncoderReversed);
-    private static final Encoder rightEncoder =
+    private Encoder rightEncoder =
             new Encoder(
                     rightEncoderPorts[0],
                     rightEncoderPorts[1],
                     rightEncoderReversed);
 
-    private static final Gyro gyro = new ADXRS450_Gyro();
+    private Gyro gyro = new ADXRS450_Gyro();
 
-    private static final DifferentialDriveOdometry odometry
+    private DifferentialDriveOdometry odometry;
 
     public Drive(){
         odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
