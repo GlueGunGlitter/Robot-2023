@@ -15,46 +15,46 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase {
 
-    private static final int left1Channel = 0;
-    private static final int left2Channel = 1;
-    private static final int right1Channel = 2;
-    private static final int right2Channel = 3;
+    private final int left1Channel = 0;
+    private final int left2Channel = 1;
+    private final int right1Channel = 2;
+    private final int right2Channel = 3;
 
-    private static final boolean left1Inverted = false;
-    private static final boolean left2Inverted = false;
-    private static final boolean right1Inverted = false;
-    private static final boolean right2Inverted = false;
+    private final boolean left1Inverted = false;
+    private final boolean left2Inverted = false;
+    private final boolean right1Inverted = false;
+    private final boolean right2Inverted = false;
 
-    private static final int[] leftEncoderPorts = new int[] {11, 12};
-    private static final boolean leftEncoderReversed = false;
+    private final int[] leftEncoderPorts = new int[] {11, 12};
+    private final boolean leftEncoderReversed = false;
 
-    private static final int[] rightEncoderPorts = new int[] {11, 12};
-    private static final boolean rightEncoderReversed = false;
+    private final int[] rightEncoderPorts = new int[] {13, 14};
+    private final boolean rightEncoderReversed = false;
 
-    private static final boolean safetyEnabled = true;
-    private static final double safetyExpiration = 0.1;
-    private static final double driveMaxOutput = 1;
+    private final boolean safetyEnabled = true;
+    private final double safetyExpiration = 0.1;
+    private final double driveMaxOutput = 1;
 
-    public static final double kEncoderDistancePerPulse = 1/1;
+    public final double kEncoderDistancePerPulse = 1/1;
 
-    public static final double ksVolts = 0;
-    public static final double kvVoltSecondsPerMeter = 0;
-    public static final double kaVoltSecondsSquaredPerMeter = 0;
-    public static final double kMaxSpeedMetersPerSecond = 0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+    public final double ksVolts = 0;
+    public final double kvVoltSecondsPerMeter = 0;
+    public final double kaVoltSecondsSquaredPerMeter = 0;
+    public final double kMaxSpeedMetersPerSecond = 0;
+    public final double kMaxAccelerationMetersPerSecondSquared = 0;
 
-    public static final double kPDriveVel = 0;
+    public final double kPDriveVel = 0;
 
-    public static final double kTrackwidthMeters = 0.69;
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+    public final double kTrackwidthMeters = 0.69;
+    public final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
-    private static Talon left1 = new Talon(left1Channel);
-    private static Victor left2 = new Victor(left2Channel);
-    private static MotorControllerGroup leftMotors = new MotorControllerGroup(left1, left2);;
+    private Talon left1 = new Talon(left1Channel);
+    private Victor left2 = new Victor(left2Channel);
+    private MotorControllerGroup leftMotors = new MotorControllerGroup(left1, left2);;
 
-    private static Victor right1 = new Victor(right1Channel);
-    private static Victor right2 = new Victor(right2Channel);
-    private static MotorControllerGroup rightMotors = new MotorControllerGroup(right1, right2);
+    private Victor right1 = new Victor(right1Channel);
+    private Victor right2 = new Victor(right2Channel);
+    private MotorControllerGroup rightMotors = new MotorControllerGroup(right1, right2);
 
     private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
@@ -71,15 +71,14 @@ public class Drive extends SubsystemBase {
 
     private Gyro gyro = new ADXRS450_Gyro();
 
-    private DifferentialDriveOdometry odometry;
+    private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
 
     public Drive(){
-        odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
-        Configure();
+        configureMotors();
+        configureSensors();
     }
 
-    public void Configure() {
-        //motors
+    public void configureMotors() {
         left1.setInverted(left1Inverted);
         left2.setInverted(left2Inverted);
 
@@ -88,11 +87,12 @@ public class Drive extends SubsystemBase {
 
         drive.setSafetyEnabled(safetyEnabled);
         drive.setExpiration(safetyExpiration);
-        drive.setMaxOutput(driveMaxOutput);
+        drive.setMaxOutput(driveMaxOutput);       
+    }
 
-        //encoders
-        leftEncoder.setDistancePerPulse(Drive.kEncoderDistancePerPulse);
-        rightEncoder.setDistancePerPulse(Drive.kEncoderDistancePerPulse);
+    public void configureSensors() {
+        leftEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
+        rightEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
         resetEncoders();
     }
 

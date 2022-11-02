@@ -1,20 +1,50 @@
 package g3;
 
-import g3.commands.Autonomous;
-import g3.subsystems.Controller;
-import g3.subsystems.Drive;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import g3.commands.autonomousCommand;
 
-public final class Robot {
+public class Robot extends TimedRobot {
 
-    public static final Drive Drive = new Drive();
-    public static final Controller Controller = new Controller();
+    RobotContainer robotContainer = new RobotContainer();
+    autonomousCommand autonomous = robotContainer.getAutonomousCommand();
 
-    private static final Autonomous autoCommand = new Autonomous();
+    @Override
+    public void robotInit() {}
 
-    private Robot() {}
+    @Override
+    public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
+    }
 
-    public static Autonomous getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return autoCommand;
+    @Override
+    public void autonomousInit() {
+        autonomous.schedule();
+    }
+
+    @Override
+    public void autonomousPeriodic() {}
+
+    @Override
+    public void teleopInit() {
+        autonomous.cancel();
+    }
+
+    /** This function is called periodically during operator control. */
+    @Override
+    public void teleopPeriodic() {}
+
+    @Override
+    public void disabledInit() {}
+
+    @Override
+    public void disabledPeriodic() {}
+
+    @Override
+    public void testInit() {}
+
+    @Override
+    public void testPeriodic() {
+
     }
 }

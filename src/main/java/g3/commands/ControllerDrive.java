@@ -1,19 +1,22 @@
 package g3.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import g3.Robot;
+import g3.subsystems.Controller;
+import g3.subsystems.Drive;
 
 public class ControllerDrive extends CommandBase {
 
-    double[] stickLeft;
-    double[] stickRight;
+    private Controller controller;
+    private Drive drive;
+    private double[] stickLeft;
+    private double[] stickRight;
 
     @Override
     public void execute() {
-        stickLeft = Robot.Controller.getStickLeft();
-        stickRight = Robot.Controller.getStickRight();
+        stickLeft = controller.getStickLeft();
+        stickRight = controller.getStickRight();
 
-        Robot.Drive.driveTank(Robot.Controller.stickControlFunc(stickLeft[1]), Robot.Controller.stickControlFunc(stickRight[1]));
+        drive.driveTank(controller.stickControlFunc(stickLeft[1]), controller.stickControlFunc(stickRight[1]));
     }
 
     @Override
