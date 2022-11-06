@@ -45,6 +45,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testPeriodic() {
-
+        robotContainer.getDrive().tankDriveVolts(7, 7);
     }
 }
