@@ -1,4 +1,4 @@
-package g3.subsystems;
+package g3.models;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;

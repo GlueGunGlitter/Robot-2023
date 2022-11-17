@@ -2,13 +2,13 @@ package g3;
 
 import g3.commands.autonomousCommand;
 import g3.models.Network;
-import g3.subsystems.Controller;
+import g3.models.Controller;
 import g3.subsystems.Drive;
 
 final class RobotContainer {
 
-    private final g3.subsystems.Drive Drive = new Drive();
-    private final g3.subsystems.Controller Controller = new Controller();
+    private final Drive drive = new Drive();
+    private final Controller controller = new Controller();
     private final autonomousCommand autoCommand = new autonomousCommand();
     private final Network network = new Network(Contsants.TEAM_NUM);
 
@@ -21,11 +21,11 @@ final class RobotContainer {
         return autoCommand;
     }
 
-    public g3.subsystems.Drive getDrive() {
-        return Drive;
+    public Drive getDrive() {
+        return drive;
     }
 
-    public g3.subsystems.Controller getController() {
-        return Controller;
+    public Controller getController() {
+        return controller;
     }
 }
