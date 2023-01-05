@@ -1,4 +1,4 @@
-package g3.models;
+package g3.utils;
 
 import com.pathplanner.lib.PathPlanner;
 

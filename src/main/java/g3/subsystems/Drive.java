@@ -1,14 +1,18 @@
 package g3.subsystems;
 
+import java.util.Date;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -23,20 +27,14 @@ public class Drive extends SubsystemBase {
 
     private final boolean left1Inverted = false;
     private final boolean left2Inverted = false;
-    private final boolean right1Inverted = false;
-    private final boolean right2Inverted = false;
-
-    private final int[] leftEncoderPorts = new int[] {11, 12};
-    private final boolean leftEncoderReversed = false;
-
-    private final int[] rightEncoderPorts = new int[] {13, 14};
-    private final boolean rightEncoderReversed = false;
+    private final boolean right1Inverted = true;
+    private final boolean right2Inverted = true;
 
     private final boolean safetyEnabled = true;
     private final double safetyExpiration = 0.1;
     private final double driveMaxOutput = 1;
 
-    public final double kEncoderDistancePerPulse = 1/1;
+    public final double kEncoderMetersPerRotation = 1/1;
 
     public final double ksVolts = 0;
     public final double kvVoltSecondsPerMeter = 0;
@@ -59,20 +57,11 @@ public class Drive extends SubsystemBase {
 
     private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    private Encoder leftEncoder =
-            new Encoder(
-                    leftEncoderPorts[0],
-                    leftEncoderPorts[1],
-                    leftEncoderReversed);
-    private Encoder rightEncoder =
-            new Encoder(
-                    rightEncoderPorts[0],
-                    rightEncoderPorts[1],
-                    rightEncoderReversed);
-
-    private Gyro gyro = new ADXRS450_Gyro();
-
+    private AHRS gyro = new AHRS(SPI.Port.kMXP);
     private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+
+    private double leftEncoderResetPos = 0;
+    private double rightEncoderResetPos = 0;
 
     public Drive(){
         configureMotors();
@@ -92,15 +81,16 @@ public class Drive extends SubsystemBase {
     }
 
     private void configureSensors() {
-        leftEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
-        rightEncoder.setDistancePerPulse(kEncoderDistancePerPulse);
         resetEncoders();
     }
 
-    @Override
-    public void periodic() {}
 
-    public void driveTank(double left, double right) {
+    public void test() {
+        System.out.println("gyro: " +getHeading());
+        
+    }
+
+    public void tankDrive(double left, double right) {
         leftMotors.set(left);
         rightMotors.set(right);
         drive.feed();
@@ -117,7 +107,10 @@ public class Drive extends SubsystemBase {
     }
 
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-        return new DifferentialDriveWheelSpeeds(leftEncoder.getRate(), rightEncoder.getRate());
+        return new DifferentialDriveWheelSpeeds(
+                left1Motor.getSelectedSensorVelocity(), 
+                right1Motor.getSelectedSensorVelocity()
+            );
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -126,20 +119,13 @@ public class Drive extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        leftEncoder.reset();
-        rightEncoder.reset();
+        leftEncoderResetPos = left1Motor.getSelectedSensorPosition();
+        rightEncoderResetPos = right1Motor.getSelectedSensorPosition();
     }
 
     public double getAverageEncoderDistance() {
-        return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
-    }
-
-    public Encoder getLeftEncoder() {
-        return leftEncoder;
-    }
-
-    public Encoder getRightEncoder() {
-        return rightEncoder;
+        return ((left1Motor.getSelectedSensorPosition()-leftEncoderResetPos) + 
+                (right1Motor.getSelectedSensorPosition()-rightEncoderResetPos)) / 2.0;
     }
 
     public void zeroHeading() {
@@ -147,10 +133,13 @@ public class Drive extends SubsystemBase {
     }
 
     public double getHeading() {
-        return gyro.getRotation2d().getDegrees();
+        return gyro.getAngle();
     }
 
     public double getTurnRate() {
         return gyro.getRate();
     }
 }
+
+
+

@@ -28,11 +28,15 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         autonomous.cancel();
+        robotContainer.getControllerDriveCommand().schedule();
     }
 
     /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {}
+    public void teleopPeriodic() {
+        System.out.println("dis: " + robotContainer.getDrive().getAverageEncoderDistance());
+        robotContainer.getDrive().test();
+    }
 
     @Override
     public void disabledInit() {}
@@ -41,10 +45,12 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {}
 
     @Override
-    public void testInit() {}
+    public void testInit() {
+        
+    }
 
     @Override
     public void testPeriodic() {
-        robotContainer.getDrive().tankDriveVolts(7, 7);
+
     }
 }
