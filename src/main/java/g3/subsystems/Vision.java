@@ -1,6 +1,7 @@
 package g3.subsystems;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class Vision {
 
@@ -9,7 +10,11 @@ public class Vision {
     private final double OBJECT_SIZE_MM = 0d;
     private final double FOCAL_LENGTH = 0d;
 
-    public double calculateDist(double objectPxSize) {
+    private double calculateDist(double objectPxSize) {
         return OBJECT_SIZE_MM * FOCAL_LENGTH / objectPxSize;
+    }
+
+    private PhotonPipelineResult getPhotonResults() {
+        return camera.getLatestResult();
     }
 }
