@@ -1,7 +1,7 @@
 package g3.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import g3.models.Controller;
+import g3.utils.Controller;
 import g3.subsystems.Drive;
 
 public class ControllerDrive extends CommandBase {
