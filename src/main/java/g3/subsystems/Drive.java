@@ -58,7 +58,7 @@ public class Drive extends SubsystemBase {
     private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
     private AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+    private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), driveMaxOutput, driveMaxOutput);
 
     private double leftEncoderResetPos = 0;
     private double rightEncoderResetPos = 0;
@@ -115,7 +115,7 @@ public class Drive extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        odometry.resetPosition(pose, gyro.getRotation2d());
+        odometry.resetPosition(gyro.getRotation2d(), leftEncoderResetPos, rightEncoderResetPos, pose);
     }
 
     public void resetEncoders() {
