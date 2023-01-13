@@ -1,13 +1,33 @@
 package g3.subsystems;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.PhotonUtils;
+import org.photonvision.RobotPoseEstimator;
+import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
+import g3.Contsants.FieldConstants;
 
 public class Vision {
 
-    static final CAMERA_HEIGHT_METERS = 0;
-    static final TARGET_HEIGHT_METERS = 0;
-    static final CAMERA_PITCH_RADIANS = 0;
+    static final int CAMERA_HEIGHT_METERS = 0;
+    static final int TARGET_HEIGHT_METERS = 0;
+    static final int CAMERA_PITCH_RADIANS = 0;
+    static final int CAMERA_FOV = 0;
 
     public static final int aprilTagsPipeline = 1;
     public static final int reflectiveTapePipeline = 2;
@@ -21,10 +41,10 @@ public class Vision {
     // from center.
     static final String cameraName = "OV5647";
 
-    public PhotonCamera photonCamera;
-    public RobotPoseEstimator robotPoseEstimator;
+    private PhotonCamera photonCamera;
+    private RobotPoseEstimator robotPoseEstimator;
 
-    public int selectedPipeline = 1;
+    private int selectedPipeline = 1;
 
     public Vision() {
         // Forward Camera
@@ -35,10 +55,7 @@ public class Vision {
 
         // Assemble the list of cameras & mount locations
         var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-        camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.robotToCam));
-
-        robotPoseEstimator =
-                new RobotPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList);
+        camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, robotToCam));
 
         initApprilTags();
     }
@@ -63,30 +80,34 @@ public class Vision {
         // TODO - once 2023 happens, replace this with just loading the 2023 field arrangement
         AprilTagFieldLayout atfl =
                 new AprilTagFieldLayout(atList, FieldConstants.length, FieldConstants.width);
+
+        var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
+        camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, robotToCam));
+                
+        robotPoseEstimator =
+                new RobotPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList);
+
     }
 
     public void changePipeline(int pipeline) {
-        camera.setPipelineIndex(pipeline);
+        photonCamera.setPipelineIndex(pipeline);
         selectedPipeline = pipeline;
     }
 
-    public double distFromReflectiveTarget() {
-        return PhotonUtils.calculateDistanceToTargetMeters(
-                                CAMERA_HEIGHT_METERS,
-                                TARGET_HEIGHT_METERS,
-                                CAMERA_PITCH_RADIANS,
-                                Units.degreesToRadians(result.getFirst().getPitch()));
-    }
+    public double distFromTarget(PhotonTrackedTarget target) {
 
-    public double angleFromReflectiveTarget(double distFromTarget) {
         double dist = PhotonUtils.calculateDistanceToTargetMeters(
                                 CAMERA_HEIGHT_METERS,
                                 TARGET_HEIGHT_METERS,
                                 CAMERA_PITCH_RADIANS,
-                                Units.degreesToRadians(result.getFirst().getPitch()));
+                                Units.degreesToRadians(target.getPitch())) / Math.cos(target.getYaw());
 
-        return Math.toAngles(Math.tan(Math.toRadians(a)))*dist;
-    }                        
+        return dist;
+    }    
+    
+    public double angleTarget(PhotonTrackedTarget target) {
+        return target.getYaw();
+    }
 
     /**
      * @param estimatedRobotPose The current best guess at robot pose
