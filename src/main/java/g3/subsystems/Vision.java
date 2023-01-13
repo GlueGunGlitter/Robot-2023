@@ -7,6 +7,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.RobotPoseEstimator;
 import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTag;
@@ -60,7 +61,7 @@ public class Vision {
         initApprilTags();
     }
 
-    public void initApprilTags() {
+    private void initApprilTags() {
         // Set up a test arena of two apriltags at the center of each driver station set
         final AprilTag tag18 =
                 new AprilTag(
@@ -87,6 +88,10 @@ public class Vision {
         robotPoseEstimator =
                 new RobotPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList);
 
+    }
+
+    public PhotonPipelineResult getResults() {
+        return photonCamera.getLatestResult();
     }
 
     public void changePipeline(int pipeline) {
