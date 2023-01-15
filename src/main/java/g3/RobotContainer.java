@@ -1,25 +1,36 @@
 package g3;
 
+import g3.commands.ControllerDrive;
 import g3.commands.autonomousCommand;
-import g3.subsystems.Controller;
 import g3.subsystems.Drive;
+import g3.utils.Controller;
+import g3.subsystems.Vision;
 
 final class RobotContainer {
 
-    private final g3.subsystems.Drive Drive = new Drive();
-    private final g3.subsystems.Controller Controller = new Controller();
-    private final autonomousCommand autoCommand = new autonomousCommand();
+    private final Drive drive = new Drive();
+    private final Controller controller = new Controller();
+    private final Vision vision = new Vision();
+    private final ControllerDrive controllerDriveCommand = new ControllerDrive(controller, drive);
+    private final autonomousCommand  autoCommand = new autonomousCommand();
 
     public autonomousCommand getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
         return autoCommand;
     }
 
-    public g3.subsystems.Drive getDrive() {
-        return Drive;
+    public Drive getDrive() {
+        return drive;
     }
 
-    public g3.subsystems.Controller getController() {
-        return Controller;
+    public Controller getController() {
+        return controller;
+    }
+
+    public Vision getVision() {
+        return vision;
+    }
+
+    public ControllerDrive getControllerDriveCommand() {
+        return controllerDriveCommand;
     }
 }
