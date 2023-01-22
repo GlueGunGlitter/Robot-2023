@@ -4,12 +4,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import g3.commands.autonomousCommand;
+import g3.commands.AutonomousCommand;
 
 public class Robot extends TimedRobot {
 
     RobotContainer robotContainer = new RobotContainer();
-    autonomousCommand autonomous = robotContainer.getAutonomousCommand();
+    AutonomousCommand autonomous = robotContainer.getAutonomousCommand();
 
     @Override
     public void robotInit() {}
@@ -17,10 +17,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        PhotonPipelineResult r = robotContainer.getVision().getResults();
-        if (r.hasTargets()) {
-            System.out.println(robotContainer.getVision().distFromTarget(robotContainer.getVision().getResults().getBestTarget()));
-        }
     }
 
     @Override
@@ -34,7 +30,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         autonomous.cancel();
-        robotContainer.getControllerDriveCommand().schedule();
+        robotContainer.getBalanceCommand().schedule();
     }
 
     /** This function is called periodically during operator control. */

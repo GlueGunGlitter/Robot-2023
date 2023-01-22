@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-//import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -57,7 +57,7 @@ public class Drive extends SubsystemBase {
 
     private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    ADXRS450_Gyro gyro = new ADXRS450_Gyro();//TODO - private AHRS gyro = new AHRS(SPI.Port.kMXP);
+    private AHRS gyro = new AHRS(SPI.Port.kMXP);
     private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), driveMaxOutput, driveMaxOutput);
 
     private double leftEncoderResetPos = 0;
@@ -133,7 +133,11 @@ public class Drive extends SubsystemBase {
     }
 
     public double getHeading() {
-        return gyro.getAngle();
+        return gyro.getYaw();
+    }
+
+    public double getPitch() {
+        return gyro.getPitch();
     }
 
     public double getTurnRate() {
