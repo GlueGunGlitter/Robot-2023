@@ -8,6 +8,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer robotContainer = new RobotContainer();
     autonomousCommand autonomous = robotContainer.getAutonomousCommand();
+    
 
     @Override
     public void robotInit() {}
@@ -34,8 +35,6 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        System.out.println("dis: " + robotContainer.getDrive().getAverageEncoderDistance());
-        robotContainer.getDrive().test();
     }
 
     @Override

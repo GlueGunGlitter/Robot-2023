@@ -1,5 +1,8 @@
 package g3;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import g3.commands.ControllerDrive;
 import g3.commands.autonomousCommand;
 import g3.subsystems.Drive;
@@ -11,6 +14,11 @@ final class RobotContainer {
     private final g3.utils.Controller controller = new Controller();
     private final ControllerDrive controllerDriveCommand = new ControllerDrive(controller, drive);
     private final autonomousCommand  autoCommand = new autonomousCommand();
+    
+    private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
+    private final NetworkTable sd = nt.getTable("SmartDashboard");
+    
+    public RobotContainer() {}
 
     public autonomousCommand getAutonomousCommand() {
         return autoCommand;

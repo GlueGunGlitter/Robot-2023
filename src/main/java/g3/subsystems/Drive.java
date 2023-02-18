@@ -2,6 +2,8 @@ package g3.subsystems;
 
 import java.util.Date;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -22,13 +24,22 @@ public class Drive extends SubsystemBase {
 
     private final int left1Channel = 1;
     private final int left2Channel = 2;
-    private final int right1Channel = 3;
-    private final int right2Channel = 4;
+    private final int left3Channel = 3;
+    private final int left4Channel = 4;
+
+    private final int right1Channel = 5;
+    private final int right2Channel = 6;
+    private final int right3Channel = 7;
+    private final int right4Channel = 8;
 
     private final boolean left1Inverted = false;
     private final boolean left2Inverted = false;
+    private final boolean left3Inverted = false;
+    private final boolean left4Inverted = false;
     private final boolean right1Inverted = true;
     private final boolean right2Inverted = true;
+    private final boolean right3Inverted = true;
+    private final boolean right4Inverted = true;
 
     private final boolean safetyEnabled = true;
     private final double safetyExpiration = 0.1;
@@ -48,12 +59,16 @@ public class Drive extends SubsystemBase {
     public final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
 
     private final WPI_TalonSRX left1Motor = new WPI_TalonSRX(left1Channel);
-    private final WPI_VictorSPX left2Motor = new WPI_VictorSPX(left2Channel);
-    private final MotorControllerGroup leftMotors = new MotorControllerGroup(left1Motor, left2Motor);;
+    private final  WPI_VictorSPX left2Motor = new  WPI_VictorSPX(left2Channel);
+    private final  WPI_VictorSPX left3Motor = new  WPI_VictorSPX(left3Channel);
+    private final  WPI_VictorSPX left4Motor = new  WPI_VictorSPX(left4Channel);
+    private final MotorControllerGroup leftMotors = new MotorControllerGroup(left1Motor, left2Motor, left3Motor, left4Motor);
 
     private final WPI_TalonSRX right1Motor = new WPI_TalonSRX(right1Channel);
     private final WPI_VictorSPX right2Motor = new WPI_VictorSPX(right2Channel);
-    private final MotorControllerGroup rightMotors = new MotorControllerGroup(right1Motor, right2Motor);
+    private final WPI_VictorSPX right3Motor = new WPI_VictorSPX(right3Channel);
+    private final WPI_VictorSPX right4Motor = new WPI_VictorSPX(right4Channel);
+    private final MotorControllerGroup rightMotors = new MotorControllerGroup(right1Motor, right2Motor, right3Motor, right4Motor);
 
     private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
 
@@ -71,9 +86,13 @@ public class Drive extends SubsystemBase {
     private void configureMotors() {
         left1Motor.setInverted(left1Inverted);
         left2Motor.setInverted(left2Inverted);
+        left3Motor.setInverted(left3Inverted);
+        left4Motor.setInverted(left4Inverted);
 
         right1Motor.setInverted(right1Inverted);
         right2Motor.setInverted(right2Inverted);
+        right3Motor.setInverted(right3Inverted);
+        right4Motor.setInverted(right4Inverted);
 
         drive.setSafetyEnabled(safetyEnabled);
         drive.setExpiration(safetyExpiration);
@@ -86,7 +105,7 @@ public class Drive extends SubsystemBase {
 
 
     public void test() {
-        System.out.println("gyro: " +getHeading());
+        tankDrive(0.5, 0.5);
         
     }
 
