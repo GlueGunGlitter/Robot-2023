@@ -21,9 +21,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import g3.Contsants.FieldConstants;
 
-public class Vision {
+public class Vision extends SubsystemBase {
 
     static final int CAMERA_HEIGHT_METERS = 0;
     static final int TARGET_HEIGHT_METERS = 0;
