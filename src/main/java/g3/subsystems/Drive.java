@@ -84,20 +84,11 @@ public class Drive extends SubsystemBase {
     }
 
     private void configureMotors() {
-        left1Motor.configPeakCurrentLimit(30); // don't activate current limit until current exceeds 30 A ...
-        left1Motor.configPeakCurrentDuration(100); // ... for at least 100 ms
-        left1Motor.configContinuousCurrentLimit(20); // once current-limiting is actived, hold at 20A
-        left1Motor.enableCurrentLimit(true);
 
         left1Motor.setInverted(left1Inverted);
         left2Motor.setInverted(left2Inverted);
         left3Motor.setInverted(left3Inverted);
         left4Motor.setInverted(left4Inverted);
-
-        right1Motor.configPeakCurrentLimit(30); // don't activate current limit until current exceeds 30 A ...
-        right1Motor.configPeakCurrentDuration(100); // ... for at least 100 ms
-        right1Motor.configContinuousCurrentLimit(20); // once current-limiting is actived, hold at 20A
-        right1Motor.enableCurrentLimit(true);
 
         right1Motor.setInverted(right1Inverted);
         right2Motor.setInverted(right2Inverted);
