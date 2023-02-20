@@ -18,10 +18,13 @@ public class Gripper extends SubsystemBase {
     @Override
     public void periodic() {
         if (controller.inst.getAButton()) {
-            motor.set(0.2);
+            motor.set(0.9);
         }
         else if (controller.inst.getBButton()) {
-            motor.set(-0.2);
+            motor.set(-0.9);
+        }
+        else {
+            motor.set(0);
         }
     }
     

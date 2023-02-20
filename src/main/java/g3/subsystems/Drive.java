@@ -83,7 +83,7 @@ public class Drive extends SubsystemBase {
         configureSensors();
     }
 
-    private void configureMotors() {
+    private void configureMotors() { 
 
         left1Motor.setInverted(left1Inverted);
         left2Motor.setInverted(left2Inverted);
@@ -95,9 +95,22 @@ public class Drive extends SubsystemBase {
         right3Motor.setInverted(right3Inverted);
         right4Motor.setInverted(right4Inverted);
 
+        left2Motor.follow(left1Motor);
+        left3Motor.follow(left1Motor);
+        left4Motor.follow(left1Motor);
+
+        right2Motor.follow(right1Motor);
+        right3Motor.follow(right1Motor);
+        right4Motor.follow(right1Motor);
+
         drive.setSafetyEnabled(safetyEnabled);
         drive.setExpiration(safetyExpiration);
         drive.setMaxOutput(driveMaxOutput);       
+
+        left1Motor.enableCurrentLimit(safetyEnabled);
+        right1Motor.enableCurrentLimit(safetyEnabled);
+
+
     }
 
     private void configureSensors() {
@@ -111,14 +124,14 @@ public class Drive extends SubsystemBase {
     }
 
     public void tankDrive(double left, double right) {
-        leftMotors.set(left);
-        rightMotors.set(right);
+        left1Motor.set(left);
+        right1Motor.set(right);
         drive.feed();
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
-        leftMotors.setVoltage(leftVolts);
-        rightMotors.setVoltage(rightVolts);
+        left1Motor.setVoltage(leftVolts);
+        right1Motor.setVoltage(rightVolts);
         drive.feed();
     }
 

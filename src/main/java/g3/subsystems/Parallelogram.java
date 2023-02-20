@@ -14,7 +14,7 @@ public class Parallelogram extends SubsystemBase {
     private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);
 
     private final TrapezoidProfile.Constraints profileConstraints =
-      new TrapezoidProfile.Constraints(0.25, 0.3);
+      new TrapezoidProfile.Constraints(0.1, 0.3);
     private final ProfiledPIDController profileController =
         new ProfiledPIDController(1.3, 0.0, 0.7, profileConstraints);
 
@@ -28,16 +28,18 @@ public class Parallelogram extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("enc: "+(motor.getSelectedSensorPosition()/2048/360));
+        System.out.println("enc: "+(motor.getSelectedSensorPosition()/2048/150/360));
 
-        if (controller.inst.getLeftTriggerAxis() > 0.9 && !ltFlag) {
-            
+        if (controller.inst.getLeftTriggerAxis() > 0.9) {
+            //motor.set(0.7);
+            profileController.setGoal(-0.00079212782);
             ltFlag = true;
         }
         else {
             ltFlag = false;
 
-            if (controller.inst.getRightTriggerAxis() > 0.9 && !rtFlag) {
+            if (controller.inst.getRightTriggerAxis() > 0.9) {
+                //motor.set(-0.7);
                 
                 rtFlag = true;
             }
@@ -46,7 +48,11 @@ public class Parallelogram extends SubsystemBase {
             }
         }
 
-        motor.set(profileController.calculate(((62.136*2.0*Math.PI)/360)*(motor.getSelectedSensorPosition()/2048/360)));//
+        if (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getLeftTriggerAxis() < 0.9) {
+            //motor.set(0);
+        }
+
+        motor.set(profileController.calculate(((62.136*2.0*Math.PI)/360)*(motor.getSelectedSensorPosition()/2048/150/360)));//
     }
 
     public void resetEncoder() {

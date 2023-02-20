@@ -33,6 +33,11 @@ final class RobotContainer {
         return drive;
     }
 
+    public g3.subsystems.Parallelogram getParallelogram() {
+        return parallelogram;
+    }
+
+
 
     public ControllerDrive getControllerDriveCommand() {
         return controllerDriveCommand;
