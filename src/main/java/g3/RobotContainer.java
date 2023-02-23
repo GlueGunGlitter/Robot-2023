@@ -38,7 +38,9 @@ final class RobotContainer {
         return parallelogram;
     }
 
-
+    public Gripper getGripper(){
+        return gripper;
+    }
 
     public ControllerDrive getControllerDriveCommand() {
         return controllerDriveCommand;

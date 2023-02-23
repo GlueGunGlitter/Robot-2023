@@ -22,15 +22,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drive extends SubsystemBase {
 
-    private final int left1Channel = 1;
-    private final int left2Channel = 2;
-    private final int left3Channel = 3;
-    private final int left4Channel = 4;
+    private final int left1Channel = 10;
+    private final int left2Channel = 11;
+    private final int left3Channel = 12;
+    private final int left4Channel = 13;
 
-    private final int right1Channel = 5;
-    private final int right2Channel = 6;
-    private final int right3Channel = 7;
-    private final int right4Channel = 8;
+    private final int right1Channel = 20;
+    private final int right2Channel = 21;
+    private final int right3Channel = 22;
+    private final int right4Channel = 23;
 
     private final boolean left1Inverted = false;
     private final boolean left2Inverted = false;

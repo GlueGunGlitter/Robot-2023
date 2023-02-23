@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import g3.utils.Controller;
 
 public class Gripper extends SubsystemBase {
-    private final int motorChannel = 10;
+    private final int motorChannel = 40;
 
     private final Controller controller;
     private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);

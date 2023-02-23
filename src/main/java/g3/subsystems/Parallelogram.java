@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import g3.utils.Controller;
 
 public class Parallelogram extends SubsystemBase {
-    private final int motorChannel = 9;
+    private final int motorChannel = 30;
 
     private final Controller controller;
     private final NetworkTable sd;
@@ -44,30 +44,23 @@ public class Parallelogram extends SubsystemBase {
         encRaw.set(motor.getSelectedSensorPosition());
         profileController.setGoal(-110.712109375);
 
-
-        if (controller.inst.getLeftTriggerAxis() > 0.9) {
-            //motor.set(0.2);
-            ltFlag = true;
+        if (controller.inst.getLeftTriggerAxis()>0.9 && controller.inst.getRightTriggerAxis()>0.9){
+            motor.set(0);
         }
-        else {
-            ltFlag = false;
-
-            if (controller.inst.getRightTriggerAxis() > 0.9) {
-                //motor.set(-0.2);
-                //profileController.setGoal(0);
-                
-                rtFlag = true;
-            }
-            else {
-                rtFlag = false;
-            }
+        else if (controller.inst.getLeftTriggerAxis() > 0.9) {
+            motor.set(0.5);
         }
+        else if (controller.inst.getRightTriggerAxis() > 0.9) {
+                motor.set(-0.5);
 
+        }
+        else{
+            motor.set(0);
+        }
         if (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getLeftTriggerAxis() < 0.9) {
-            //motor.set(0);
+            motor.set(0);
         }
 
-        motor.set(profileController.calculate(-(((62.136*2.0*Math.PI)/360)*(motor.getSelectedSensorPosition()/2048/150)*360)));//-121.712109375
     }
 
     public void resetEncoder() {
