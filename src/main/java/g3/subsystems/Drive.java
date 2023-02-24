@@ -85,6 +85,10 @@ public class Drive extends SubsystemBase {
 
     private void configureMotors() { 
 
+        
+        left1Motor.configPeakCurrentLimit(20);
+         right1Motor.configPeakCurrentLimit(20);
+
         left1Motor.setInverted(left1Inverted);
         left2Motor.setInverted(left2Inverted);
         left3Motor.setInverted(left3Inverted);
@@ -102,6 +106,7 @@ public class Drive extends SubsystemBase {
         right2Motor.follow(right1Motor);
         right3Motor.follow(right1Motor);
         right4Motor.follow(right1Motor);
+        
 
         drive.setSafetyEnabled(safetyEnabled);
         drive.setExpiration(safetyExpiration);
