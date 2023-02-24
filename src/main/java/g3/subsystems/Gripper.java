@@ -24,10 +24,10 @@ public class Gripper extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (controller.inst.getAButton()) {
+        if (controller.inst.getRightBumper()) {
             motor.set(sd.getValue("gripperVelocity").getDouble());
         }
-        else if (controller.inst.getBButton()) {
+        else if (controller.inst.getLeftBumper()) {
             motor.set(-sd.getValue("gripperVelocity").getDouble());
         }
         else {

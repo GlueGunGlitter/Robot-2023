@@ -10,9 +10,10 @@ public class ControllerDrive extends CommandBase {
     private Drive drive;
     private double[] stickLeft;
     private double[] stickRight;
-    private int direction = -1;
+    //private int direction = -1;
     private boolean povFlag = false;
-
+    private double speedVal;
+    private int minusOrPlus;
     public ControllerDrive(Controller controller, Drive drive) {
         this.controller = controller;
         this.drive = drive;
@@ -22,19 +23,13 @@ public class ControllerDrive extends CommandBase {
     public void execute() {
         stickLeft = controller.getStickLeft();
         stickRight = controller.getStickRight();
-
         double velocityMul = (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getRightTriggerAxis() < 0.9) ? 1:0.3;
+        speedVal = stickLeft[1]*velocityMul;
+        
+         drive.tankDrive(controller.stickControlFunc(Math.pow((stickLeft[1]*velocityMul),1.5)+0.3), 
+                 controller.stickControlFunc(Math.pow((stickRight[1]*velocityMul),1.5)+0.3)); // added function multiplier
 
-        drive.tankDrive(controller.stickControlFunc(stickLeft[1]*direction*velocityMul), 
-                controller.stickControlFunc(stickRight[1]*direction*velocityMul));
-
-        if (controller.inst.getPOV() == 180 && !povFlag) {
-            direction *= -1;
-            povFlag = true;
-        }
-        else {
-            povFlag = false;
-        }
+        //drive.tankDrive(stickLeft[1],(stickRight[1])); // added function multiplier
 
         
     }
