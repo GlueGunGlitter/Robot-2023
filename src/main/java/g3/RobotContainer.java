@@ -2,7 +2,6 @@ package g3;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import g3.commands.ControllerDrive;
 import g3.commands.autonomousCommand;
 import g3.subsystems.Drive;
