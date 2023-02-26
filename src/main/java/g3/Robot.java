@@ -2,6 +2,7 @@ package g3;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.cameraserver.CameraServer;
 import g3.commands.AutonomousCommand;
 
 public class Robot extends TimedRobot {
@@ -10,8 +11,11 @@ public class Robot extends TimedRobot {
     AutonomousCommand autonomous = robotContainer.getAutonomousCommand();
     
 
+
     @Override
-    public void robotInit() {}
+    public void robotInit() {
+        CameraServer.startAutomaticCapture();
+    }
 
     @Override
     public void robotPeriodic() {
