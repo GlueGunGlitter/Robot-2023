@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         robotContainer.getParallelogram().resetEncoder();
+        robotContainer.getGripper().resetEncoder();
         autonomous.cancel();
         robotContainer.getControllerDriveCommand().schedule();
     }

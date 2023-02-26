@@ -8,12 +8,9 @@ public class ControllerDrive extends CommandBase {
 
     private Controller controller;
     private Drive drive;
-    private double[] stickLeft;
-    private double[] stickRight;
+    private double[] velLeft;
+    private double[] velRight;
     private int direction = -1;
-    private boolean povFlag = false;
-    private double speedVal;
-    private int minusOrPlus;
     public ControllerDrive(Controller controller, Drive drive) {
         this.controller = controller;
         this.drive = drive;
@@ -21,23 +18,16 @@ public class ControllerDrive extends CommandBase {
 
     @Override
     public void execute() {
-        stickLeft = controller.getStickLeft();
-        stickRight = controller.getStickRight();
-        /*if (stickLeft[1]<0.1 && stickLeft[1]>-0.1){
-            stickLeft[1]=0;
-        }
-        if (stickRight[1]<0.1 && stickRight[1]>-0.1){
-            stickLeft[1]=0;
-        }*/
-        double velocityMul = (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getRightTriggerAxis() < 0.9) ? 1:0.3;
-        speedVal = -stickLeft[1]*velocityMul;
-        
-        //drive.tankDrive(controller.stickControlFunc(Math.pow((stickLeft[1]*velocityMul),1.5)+0.3), 
-       //          controller.stickControlFunc(Math.pow((stickRight[1]*velocityMul),1.5)+0.3)); // added function multiplier
+        velLeft = controller.getStickLeft();
+        velRight = controller.getStickRight();
 
-        drive.tankDrive(stickLeft[1],(stickRight[1])); // added function multiplier
 
+        double velocityMul = (controller.inst.getRightBumper()  && controller.inst.getLeftBumper()) ? 0.12:1;
         
+        drive.tankDrive(
+            (velLeft[1]<0.1 && velLeft[1]>-0.1) ? 0:Math.pow((velLeft[1]),4)*((velLeft[1]<0) ? -1:1)*velocityMul*direction+(0.07*direction*((velLeft[1]<0) ? -1:1)), 
+            (velRight[1]<0.1 && velRight[1]>-0.1) ? 0:Math.pow((velRight[1]),4)*((velRight[1]<0) ? -1:1)*velocityMul*direction+(0.07*direction*((velRight[1]<0) ? -1:1)));
+            
     }
 
     @Override
