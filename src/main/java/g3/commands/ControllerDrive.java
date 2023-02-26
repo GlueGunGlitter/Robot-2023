@@ -10,7 +10,7 @@ public class ControllerDrive extends CommandBase {
     private Drive drive;
     private double[] stickLeft;
     private double[] stickRight;
-    //private int direction = -1;
+    private int direction = -1;
     private boolean povFlag = false;
     private double speedVal;
     private int minusOrPlus;
@@ -23,12 +23,12 @@ public class ControllerDrive extends CommandBase {
     public void execute() {
         stickLeft = controller.getStickLeft();
         stickRight = controller.getStickRight();
-        if (stickLeft[1]<0.1 && stickLeft[1]>-0.1){
+        /*if (stickLeft[1]<0.1 && stickLeft[1]>-0.1){
             stickLeft[1]=0;
         }
         if (stickRight[1]<0.1 && stickRight[1]>-0.1){
             stickLeft[1]=0;
-        }
+        }*/
         double velocityMul = (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getRightTriggerAxis() < 0.9) ? 1:0.3;
         speedVal = -stickLeft[1]*velocityMul;
         

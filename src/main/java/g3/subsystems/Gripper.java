@@ -14,8 +14,6 @@ public class Gripper extends SubsystemBase {
     private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);
     private final NetworkTable sd;
 
-    private DoublePublisher vel;
-
     public Gripper(Controller controller, NetworkTable sd) {
         this.controller = controller;
         this.sd = sd;

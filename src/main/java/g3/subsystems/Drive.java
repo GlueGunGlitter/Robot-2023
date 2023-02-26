@@ -86,8 +86,8 @@ public class Drive extends SubsystemBase {
     private void configureMotors() { 
 
         
-        left1Motor.configPeakCurrentLimit(20);
-         right1Motor.configPeakCurrentLimit(20);
+        //left1Motor.configPeakCurrentLimit(20);
+        //right1Motor.configPeakCurrentLimit(20);
 
         left1Motor.setInverted(left1Inverted);
         left2Motor.setInverted(left2Inverted);
@@ -166,6 +166,11 @@ public class Drive extends SubsystemBase {
                 (right1Motor.getSelectedSensorPosition()-rightEncoderResetPos)) / 2.0;
     }
 
+    public double getEcoderDistanceInMeters() {
+        return (((left1Motor.getSelectedSensorPosition()-leftEncoderResetPos) + 
+                (right1Motor.getSelectedSensorPosition()-rightEncoderResetPos)) / 2.0)/8192/10*10.16*Math.PI/100;
+    }
+
     public void zeroHeading() {
         gyro.reset();
     }
@@ -174,9 +179,14 @@ public class Drive extends SubsystemBase {
         return gyro.getAngle();
     }
 
+    public double getPitch() {
+        return gyro.getPitch();
+    }
+
     public double getTurnRate() {
         return gyro.getRate();
     }
+    
 }
 
 

@@ -3,7 +3,7 @@ package g3;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import g3.commands.ControllerDrive;
-import g3.commands.autonomousCommand;
+import g3.commands.AutonomousCommand;
 import g3.subsystems.Drive;
 import g3.subsystems.Gripper;
 import g3.subsystems.Parallelogram;
@@ -20,12 +20,12 @@ final class RobotContainer {
     private final Gripper gripper = new Gripper(controller, sd);
 
     private final ControllerDrive controllerDriveCommand = new ControllerDrive(controller, drive);
-    private final autonomousCommand  autoCommand = new autonomousCommand();
+    private final AutonomousCommand  autoCommand = new AutonomousCommand(parallelogram, drive);
     
     
     public RobotContainer() {}
 
-    public autonomousCommand getAutonomousCommand() {
+    public AutonomousCommand getAutonomousCommand() {
         return autoCommand;
     }
 

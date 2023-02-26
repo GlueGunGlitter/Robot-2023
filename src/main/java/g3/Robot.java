@@ -2,12 +2,12 @@ package g3;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import g3.commands.autonomousCommand;
+import g3.commands.AutonomousCommand;
 
 public class Robot extends TimedRobot {
 
     RobotContainer robotContainer = new RobotContainer();
-    autonomousCommand autonomous = robotContainer.getAutonomousCommand();
+    AutonomousCommand autonomous = robotContainer.getAutonomousCommand();
     
 
     @Override
