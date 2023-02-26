@@ -37,12 +37,12 @@ public class Parallelogram extends SubsystemBase {
 
         if (controller.inst.getLeftTriggerAxis()>0.9 && !ltFlag) {
             direction = 1;
-            System.out.println("1");
+
             ltFlag = true;
         }
         else if (controller.inst.getRightTriggerAxis()>0.9 && !rtFlag) {
             direction = -1;
-            System.out.println("-1");
+
             rtFlag = true;
         }
         else {
@@ -55,7 +55,6 @@ public class Parallelogram extends SubsystemBase {
             timeInMotion += 1f/20f;
 
             if ((timeInMotion > 0.15 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
-                System.out.println("!!!!!!!!!!");
                 direction = 0;
                 timeInMotion = 0;
                 motor.set(0);
