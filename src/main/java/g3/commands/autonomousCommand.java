@@ -16,11 +16,11 @@ public class AutonomousCommand extends CommandBase {
 
     @Override
     public void execute() {
-        drive.resetEncoders();
+        /*drive.resetEncoders();
         parallelogram.open();
         if (parallelogram.isOpen()) {
             drive.tankDrive(0.3, 0.3);
-        }
+        }*/
     }
 
     @Override

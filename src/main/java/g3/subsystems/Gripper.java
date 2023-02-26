@@ -20,14 +20,12 @@ public class Gripper extends SubsystemBase {
 
     private double goal = 0;
     private DoublePublisher encRaw;
-    private DoublePublisher pidOutput;
 
     public Gripper(Controller controller, NetworkTable sd) {
         this.controller = controller;
         this.sd = sd;
 
         encRaw = sd.getDoubleTopic("Griper encRaw").publish();
-        pidOutput = sd.getDoubleTopic("griper pid output").publish();
     }
 
     @Override
@@ -38,15 +36,13 @@ public class Gripper extends SubsystemBase {
         if (controller.inst.getYButtonPressed()) {// open
             goal = 30186;
         }
-        else if (controller.inst.getBButtonPressed()) { //con
+        else if (controller.inst.getBButtonPressed()) { //cube
             goal = -100;
         }
-        else if (controller.inst.getXButtonPressed()) { //cube
-            goal = -20000;
+        else if (controller.inst.getXButtonPressed()) { //con
+            goal = -13500;
         }
 
-
-        pidOutput.set(goal);
         motor.set(pid.calculate(motor.getSelectedSensorPosition(), goal));
     }
 

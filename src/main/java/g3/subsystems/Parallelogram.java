@@ -6,6 +6,7 @@ import java.util.function.DoublePredicate;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.DoublePublisher;
@@ -20,59 +21,59 @@ public class Parallelogram extends SubsystemBase {
     private final NetworkTable sd;
     private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);
 
-    private final TrapezoidProfile.Constraints profileConstraints =
-      new TrapezoidProfile.Constraints(0.1, 0.03);
-    private final ProfiledPIDController profileController =
-        new ProfiledPIDController(0.0001, 0.0, 0, profileConstraints);
-
+    private int direction = 0;
+    private double timeInMotion = 0;
     private boolean ltFlag = false;
     private boolean rtFlag = false;
-    private boolean afterMid = false;
-    private DoublePublisher encCalc;
-    private DoublePublisher encRaw;
-    private int midPos=-45000;
+
     public Parallelogram(Controller controller, NetworkTable smartdashboard) {
         this.sd = smartdashboard;
         this.controller = controller;
-
-        encCalc = sd.getDoubleTopic("parallelogram encCalc").publish();
-        encRaw = sd.getDoubleTopic("parallelogram encRaw").publish();
     }
     
     
     @Override
     public void periodic() {
-        encCalc.set((motor.getSelectedSensorPosition()/2048/150)*360);
-        encRaw.set(motor.getSelectedSensorPosition());
-        profileController.setGoal(-110.712109375);
-        
 
-        if (controller.inst.getLeftTriggerAxis()>0.9 && controller.inst.getRightTriggerAxis()>0.9){
-            motor.set(0);
+        if (controller.inst.getLeftTriggerAxis()>0.9 && !ltFlag) {
+            direction = 1;
+            System.out.println("1");
+            ltFlag = true;
         }
-        else if (controller.inst.getLeftTriggerAxis() > 0.9) {
-            
-            motor.set(0.25);
-            afterMid=true;
+        else if (controller.inst.getRightTriggerAxis()>0.9 && !rtFlag) {
+            direction = -1;
+            System.out.println("-1");
+            rtFlag = true;
         }
-        else if (controller.inst.getRightTriggerAxis() > 0.9) {
-                motor.set(-0.25);
-                afterMid=false;
+        else {
+            ltFlag = false;
+            rtFlag = false;
+        }
 
-        }
-        else{
-            if (motor.getSelectedSensorPosition()>midPos && afterMid==true){
-                motor.set(0.5);
+        if (direction != 0) {
+            motor.set((direction == 1) ? 0.16:-0.35);
+            timeInMotion += 1f/20f;
+
+            if ((timeInMotion > 0.15 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
+                System.out.println("!!!!!!!!!!");
+                direction = 0;
+                timeInMotion = 0;
+                motor.set(0);
             }
-
-            else{
-            motor.set(0);
-            }
         }
-        if (controller.inst.getRightTriggerAxis() < 0.9 && controller.inst.getLeftTriggerAxis() < 0.9) {
+        else {
             motor.set(0);
         }
 
+        //System.out.println("time: " + timeInMotion + ", speed: " + motor.getSelectedSensorVelocity() + ", dir: " +direction);
+    }
+
+    public boolean open() {
+        return (motor.getSelectedSensorPosition() < -4550);
+    }
+
+    public boolean isOpen() {
+        return false;
     }
 
     public void resetEncoder() {
