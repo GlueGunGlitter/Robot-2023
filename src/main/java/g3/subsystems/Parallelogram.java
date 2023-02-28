@@ -25,6 +25,7 @@ public class Parallelogram extends SubsystemBase {
     private double timeInMotion = 0;
     private boolean ltFlag = false;
     private boolean rtFlag = false;
+    private boolean open = false;
 
     public Parallelogram(Controller controller, NetworkTable smartdashboard) {
         this.sd = smartdashboard;
@@ -36,6 +37,7 @@ public class Parallelogram extends SubsystemBase {
     public void periodic() {
 
         if (controller.inst.getLeftTriggerAxis()>0.9 && !ltFlag) {
+            open = false;
             direction = 1;
 
             ltFlag = true;
@@ -54,10 +56,14 @@ public class Parallelogram extends SubsystemBase {
             motor.set((direction == 1) ? 0.16:-0.35);
             timeInMotion += 1f/20f;
 
-            if ((timeInMotion > 0.15 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
+            if ((timeInMotion > 1 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
                 direction = 0;
                 timeInMotion = 0;
                 motor.set(0);
+
+                if (direction == -1) {
+                    open = true;
+                }
             }
         }
         else {
@@ -67,12 +73,16 @@ public class Parallelogram extends SubsystemBase {
         //System.out.println("time: " + timeInMotion + ", speed: " + motor.getSelectedSensorVelocity() + ", dir: " +direction);
     }
 
-    public boolean open() {
-        return (motor.getSelectedSensorPosition() < -4550);
+    public void open() {
+        direction = -1;
+    }
+
+    public void close() {
+        direction = 1;
     }
 
     public boolean isOpen() {
-        return false;
+        return open;
     }
 
     public void resetEncoder() {

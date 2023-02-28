@@ -9,11 +9,11 @@ public class Robot extends TimedRobot {
 
     RobotContainer robotContainer = new RobotContainer();
     AutonomousCommand autonomous = robotContainer.getAutonomousCommand();
-    
-
 
     @Override
     public void robotInit() {
+        robotContainer.getParallelogram().resetEncoder();
+        robotContainer.getGripper().resetEncoder();
         CameraServer.startAutomaticCapture();
     }
 
@@ -32,8 +32,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        robotContainer.getParallelogram().resetEncoder();
-        robotContainer.getGripper().resetEncoder();
         autonomous.cancel();
         robotContainer.getControllerDriveCommand().schedule();
     }

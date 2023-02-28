@@ -62,15 +62,13 @@ public class Drive extends SubsystemBase {
     private final  WPI_VictorSPX left2Motor = new  WPI_VictorSPX(left2Channel);
     private final  WPI_VictorSPX left3Motor = new  WPI_VictorSPX(left3Channel);
     private final  WPI_VictorSPX left4Motor = new  WPI_VictorSPX(left4Channel);
-    private final MotorControllerGroup leftMotors = new MotorControllerGroup(left1Motor, left2Motor, left3Motor, left4Motor);
 
     private final WPI_TalonSRX right1Motor = new WPI_TalonSRX(right1Channel);
     private final WPI_VictorSPX right2Motor = new WPI_VictorSPX(right2Channel);
     private final WPI_VictorSPX right3Motor = new WPI_VictorSPX(right3Channel);
     private final WPI_VictorSPX right4Motor = new WPI_VictorSPX(right4Channel);
-    private final MotorControllerGroup rightMotors = new MotorControllerGroup(right1Motor, right2Motor, right3Motor, right4Motor);
 
-    private DifferentialDrive drive = new DifferentialDrive(leftMotors, rightMotors);
+    private DifferentialDrive drive = new DifferentialDrive(left1Motor, right1Motor);
 
     private AHRS gyro = new AHRS(SPI.Port.kMXP);
     private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), driveMaxOutput, driveMaxOutput);
@@ -124,8 +122,14 @@ public class Drive extends SubsystemBase {
 
 
     public void test() {
-        tankDrive(0.5, 0.5);
+        left1Motor.set(0.3);
+        right1Motor.set(0.3);
         
+    }
+
+    @Override
+    public void periodic() {
+        //test();
     }
 
     public void tankDrive(double left, double right) {

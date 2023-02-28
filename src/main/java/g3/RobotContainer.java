@@ -20,7 +20,7 @@ final class RobotContainer {
     private final Gripper gripper = new Gripper(controller, sd);
 
     private final ControllerDrive controllerDriveCommand = new ControllerDrive(controller, drive);
-    private final AutonomousCommand  autoCommand = new AutonomousCommand(parallelogram, drive);
+    private final AutonomousCommand  autoCommand = new AutonomousCommand(parallelogram, gripper, drive);
     
     
     public RobotContainer() {}

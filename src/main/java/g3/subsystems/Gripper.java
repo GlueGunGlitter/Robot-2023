@@ -46,12 +46,16 @@ public class Gripper extends SubsystemBase {
         motor.set(pid.calculate(motor.getSelectedSensorPosition(), goal));
     }
 
-    public boolean open() {
-        return (motor.getSelectedSensorPosition() < -4550);
+    public void open() {
+        goal = 30186;
     }
 
-    public boolean isOpen() {
-        return false;
+    public void closeCube() {
+        goal = -100;
+    }
+
+    public void closeCone() {
+        goal = -13500;
     }
 
     public void resetEncoder() {
