@@ -12,66 +12,88 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 import g3.utils.Controller;
+
 
 public class Parallelogram extends SubsystemBase {
     private final int motorChannel = 30;
 
     private final Controller controller;
     private final NetworkTable sd;
-    private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);
+    private final WPI_TalonFX motor = new WPI_TalonFX(motorChannel);
 
     private int direction = 0;
     private double timeInMotion = 0;
     private boolean ltFlag = false;
     private boolean rtFlag = false;
     private boolean open = false;
+    private int openPos = -71171;
+    private int closedPos = 22655;
+    private int midPos = -44545;
+    private double currGoal = 0;
+    private DoublePublisher encRaw;
+    private DoublePublisher boreEnc;
+    private Encoder throughBore;
+    private int ticks;
+    private int rawTicks;
+
+
+
+    private final PIDController pid = new PIDController(0.00002, 0.0, 0);
 
     public Parallelogram(Controller controller, NetworkTable smartdashboard) {
         this.sd = smartdashboard;
         this.controller = controller;
+        encRaw = sd.getDoubleTopic("Parallelogram encRaw").publish();
+        boreEnc = sd.getDoubleTopic("Parallelogram Bore Encoder").publish();
+        this.throughBore = new Encoder(0,1);
+
     }
-    
-    
+
     @Override
     public void periodic() {
-
-        if (controller.inst.getLeftTriggerAxis()>0.9 && !ltFlag) {
+        encRaw.set(motor.getSelectedSensorPosition());
+        boreEnc.set(throughBore.getDistance());
+        System.out.println("Rate" + throughBore.getRate() + ", Distance: " + throughBore.getDistance() + " Raw: " + throughBore.getRaw());
+        if (controller.inst.getLeftTriggerAxis() > 0.9 && !ltFlag) {
             open = false;
             direction = 1;
 
             ltFlag = true;
-        }
-        else if (controller.inst.getRightTriggerAxis()>0.9 && !rtFlag) {
+        } else if (controller.inst.getRightTriggerAxis() > 0.9 && !rtFlag) {
             direction = -1;
 
             rtFlag = true;
-        }
-        else {
+        } else {
             ltFlag = false;
             rtFlag = false;
         }
 
         if (direction != 0) {
-            motor.set((direction == 1) ? 0.16:-0.35);
-            timeInMotion += 1f/20f;
+             motor.set((direction == 1) ? 0.16:-0.35);
 
-            if ((timeInMotion > 1 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
-                direction = 0;
-                timeInMotion = 0;
-                motor.set(0);
+        }
+        timeInMotion += 1f / 20f;
+        
+        if ((timeInMotion > 1 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
+            direction = 0;
+            timeInMotion = 0;
+            motor.set(0);
 
-                if (direction == -1) {
-                    open = true;
-                }
+            if (direction == -1) {
+                open = true;
             }
         }
-        else {
-            motor.set(0);
-        }
-
-        //System.out.println("time: " + timeInMotion + ", speed: " + motor.getSelectedSensorVelocity() + ", dir: " +direction);
     }
+
+    {
+        motor.set(0);
+    }
+
+    // System.out.println("time: " + timeInMotion + ", speed: " +
+    // motor.getSelectedSensorVelocity() + ", dir: " +direction);
+    
 
     public void open() {
         direction = -1;
@@ -87,5 +109,6 @@ public class Parallelogram extends SubsystemBase {
 
     public void resetEncoder() {
         motor.setSelectedSensorPosition(0);
-    }  
+        throughBore.reset();
+    }
 }

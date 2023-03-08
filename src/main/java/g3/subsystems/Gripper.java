@@ -15,11 +15,14 @@ public class Gripper extends SubsystemBase {
     private final  WPI_TalonFX motor = new  WPI_TalonFX(motorChannel);
     private final NetworkTable sd;
 
-    private final PIDController pid =
-        new PIDController(0.00002, 0.0, 0);
+
 
     private double goal = 0;
     private DoublePublisher encRaw;
+    
+
+    private final PIDController pid =
+    new PIDController(0.00002, 0.0, 0);
 
     public Gripper(Controller controller, NetworkTable sd) {
         this.controller = controller;
@@ -34,13 +37,13 @@ public class Gripper extends SubsystemBase {
         
 
         if (controller.inst.getYButtonPressed()) {// open
-            goal = 30186;
+            goal = -30186;
         }
         else if (controller.inst.getBButtonPressed()) { //cube
-            goal = -100;
+            goal = 100;
         }
         else if (controller.inst.getXButtonPressed()) { //con
-            goal = -13500;
+            goal = 13000;
         }
 
         motor.set(pid.calculate(motor.getSelectedSensorPosition(), goal));
@@ -55,7 +58,7 @@ public class Gripper extends SubsystemBase {
     }
 
     public void closeCone() {
-        goal = -13500;
+        goal = -13000;
     }
 
     public void resetEncoder() {

@@ -10,7 +10,7 @@ import g3.subsystems.Drive;
 import g3.subsystems.Gripper;
 import g3.subsystems.Parallelogram;
 
-public class AutonomousCommand extends CommandBase {
+public class AutonomousCommandBalance extends CommandBase {
 
     private final Parallelogram parallelogram;
     private final Drive drive;
@@ -19,7 +19,7 @@ public class AutonomousCommand extends CommandBase {
     private boolean hasOpened = false;
     private boolean hasClosed = false;
 
-    public AutonomousCommand(Parallelogram parallelogram, Gripper gripper, Drive drive) {
+    public AutonomousCommandBalance(Parallelogram parallelogram, Gripper gripper, Drive drive) {
         this.parallelogram = parallelogram;
         this.drive = drive;
         this.gripper = gripper;
@@ -40,8 +40,6 @@ public class AutonomousCommand extends CommandBase {
             gripper.open();
         }
         if (System.currentTimeMillis()-statTimer>4000 && System.currentTimeMillis()-statTimer<7500) {
-            drive.tankDrive(-0.3, -0.3);
-
             if (!hasClosed) {
                 parallelogram.close();
                 hasClosed = true;

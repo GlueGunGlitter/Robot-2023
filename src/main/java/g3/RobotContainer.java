@@ -1,9 +1,16 @@
 package g3;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.networktables.StringSubscriber;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import g3.commands.ControllerDrive;
-import g3.commands.AutonomousCommand;
+import g3.commands.AutonomousCommandBalance;
+import g3.commands.AutonomousCommandNobalance;
 import g3.subsystems.Drive;
 import g3.subsystems.Gripper;
 import g3.subsystems.Parallelogram;
@@ -20,13 +27,17 @@ final class RobotContainer {
     private final Gripper gripper = new Gripper(controller, sd);
 
     private final ControllerDrive controllerDriveCommand = new ControllerDrive(controller, drive);
-    private final AutonomousCommand  autoCommand = new AutonomousCommand(parallelogram, gripper, drive);
-    
-    
-    public RobotContainer() {}
+    private final AutonomousCommandNobalance  autoCommandNoBalance = new AutonomousCommandNobalance(parallelogram, gripper, drive);
+    private final AutonomousCommandBalance  autoCommandBalance = new AutonomousCommandBalance(parallelogram, gripper, drive);
 
-    public AutonomousCommand getAutonomousCommand() {
-        return autoCommand;
+    private final GenericEntry autoCommandChoice;
+
+    public RobotContainer() {
+        autoCommandChoice = Shuffleboard.getTab("Controlls").add("chooseAutoCommand", "No Balalnce").getEntry();
+    }
+
+    public CommandBase getAutonomousCommand() {
+        return (autoCommandChoice.get().getString() == "Balance") ? autoCommandBalance : autoCommandNoBalance;
     }
 
     public g3.subsystems.Drive getDrive() {
