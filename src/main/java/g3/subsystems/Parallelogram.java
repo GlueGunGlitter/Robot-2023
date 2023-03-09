@@ -111,4 +111,20 @@ public class Parallelogram extends SubsystemBase {
         motor.setSelectedSensorPosition(0);
         throughBore.reset();
     }
+
+    public void pid_control(){
+        if(controller.inst.getLeftTriggerAxis() > 0.9 && controller.inst.getRightTriggerAxis() > 0.9){
+            motor.set(0);
+        }
+       else if (controller.inst.getRightTriggerAxis() > 0.9) {
+        motor.set(pid.calculate(throughBore.getDistance(), openPos));
+        }
+       else if (controller.inst.getLeftTriggerAxis() > 0.9) {
+        motor.set(pid.calculate(throughBore.getDistance(), closedPos));
+            }
+       else{
+        motor.set(0);
+            }
+    }
+
 }
