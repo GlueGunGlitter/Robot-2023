@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Encoder;
 import g3.utils.Controller;
 
-
 public class Parallelogram extends SubsystemBase {
     private final int motorChannel = 30;
 
@@ -38,7 +37,8 @@ public class Parallelogram extends SubsystemBase {
     private int ticks;
     private int rawTicks;
 
-
+    private boolean pressedRight = false;
+    private boolean pressedLeft = false;
 
     private final PIDController pid = new PIDController(0.00002, 0.0, 0);
 
@@ -47,7 +47,7 @@ public class Parallelogram extends SubsystemBase {
         this.controller = controller;
         encRaw = sd.getDoubleTopic("Parallelogram encRaw").publish();
         boreEnc = sd.getDoubleTopic("Parallelogram Bore Encoder").publish();
-        this.throughBore = new Encoder(0,1);
+        this.throughBore = new Encoder(0, 1);
 
     }
 
@@ -55,7 +55,9 @@ public class Parallelogram extends SubsystemBase {
     public void periodic() {
         encRaw.set(motor.getSelectedSensorPosition());
         boreEnc.set(throughBore.getDistance());
-        System.out.println("Rate" + throughBore.getRate() + ", Distance: " + throughBore.getDistance() + " Raw: " + throughBore.getRaw());
+        System.out.println("Rate" + throughBore.getRate() + ", Distance: " + throughBore.getDistance() + " Raw: "
+                + throughBore.getRaw());
+
         if (controller.inst.getLeftTriggerAxis() > 0.9 && !ltFlag) {
             open = false;
             direction = 1;
@@ -71,11 +73,26 @@ public class Parallelogram extends SubsystemBase {
         }
 
         if (direction != 0) {
-             motor.set((direction == 1) ? 0.16:-0.35);
+            if (direction == 1) { // closing
+                if (throughBore.getDistance() < midPos) {
+                    motor.set(0);
+
+                } else {
+                    motor.set(0.3);
+                }
+            } else { // OPening
+                if (throughBore.getDistance() > -230) {
+                    motor.set(-0.5);
+                } else {
+                    motor.set(0);
+                }
+            }
+            // motor.set((direction == 1) ? 0.16 : -0.35); // 0.16 is close, direciton 1 is
+            // close
 
         }
         timeInMotion += 1f / 20f;
-        
+
         if ((timeInMotion > 1 && Math.abs(motor.getSelectedSensorVelocity()) < 1800)) {
             direction = 0;
             timeInMotion = 0;
@@ -93,7 +110,6 @@ public class Parallelogram extends SubsystemBase {
 
     // System.out.println("time: " + timeInMotion + ", speed: " +
     // motor.getSelectedSensorVelocity() + ", dir: " +direction);
-    
 
     public void open() {
         direction = -1;
@@ -112,19 +128,39 @@ public class Parallelogram extends SubsystemBase {
         throughBore.reset();
     }
 
-    public void pid_control(){
-        if(controller.inst.getLeftTriggerAxis() > 0.9 && controller.inst.getRightTriggerAxis() > 0.9){
+    public void pid_control() {
+        if (controller.inst.getLeftTriggerAxis() > 0.9 && controller.inst.getRightTriggerAxis() > 0.9) {
+            currGoal = throughBore.getDistance();
+        } else if (controller.inst.getRightTriggerAxis() > 0.9 && pressedRight == false) {
+            pressedLeft = false;
+            pressedRight = true;
+            if (throughBore.getDistance() < midPos) {
+                currGoal = openPos;
+            } else {
+                currGoal = midPos;
+            }
+
+        } else if (controller.inst.getLeftTriggerAxis() > 0.9 && pressedLeft == false) {
+            pressedRight = false;
+            pressedLeft = true;
+            if (throughBore.getDistance() > midPos) {
+                currGoal = closedPos;
+            } else {
+                currGoal = midPos;
+            }
+
+        } else {
+            currGoal = throughBore.getDistance();
+        }
+        if (throughBore.getDistance() <= -500 && pressedRight == true) {
             motor.set(0);
-        }
-       else if (controller.inst.getRightTriggerAxis() > 0.9) {
-        motor.set(pid.calculate(throughBore.getDistance(), openPos));
-        }
-       else if (controller.inst.getLeftTriggerAxis() > 0.9) {
-        motor.set(pid.calculate(throughBore.getDistance(), closedPos));
+            if (throughBore.getDistance() >= -30 && pressedLeft == true) {
+                motor.set(0);
             }
-       else{
-        motor.set(0);
-            }
+        } else {
+            motor.set(pid.calculate(throughBore.getDistance(), currGoal));
+
+        }
     }
 
 }
