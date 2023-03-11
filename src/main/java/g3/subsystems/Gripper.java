@@ -37,13 +37,13 @@ public class Gripper extends SubsystemBase {
         
 
         if (controller.inst.getYButtonPressed()) {// open
-            goal = -30186;
+            goal = -37186;
         }
         else if (controller.inst.getBButtonPressed()) { //cube
-            goal = 100;
+            goal = -5500;
         }
-        else if (controller.inst.getXButtonPressed()) { //con
-            goal = 13000;
+        else if (controller.inst.getXButtonPressed()) { //cone
+            goal = 5000;
         }
 
         motor.set(pid.calculate(motor.getSelectedSensorPosition(), goal));
