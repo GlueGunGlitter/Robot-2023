@@ -1,6 +1,6 @@
 package g3;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
+//import org.apache.commons.lang3.ObjectUtils.Null;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 
@@ -40,12 +40,12 @@ final class RobotContainer {
     private final AutonomousCommandBalance  autoCommandBalance = new AutonomousCommandBalance(parallelogram, gripper, drive);
 
 
-    private POVButton d_UpPOV = new POVButton(controller.inst, 0);
+//    private POVButton d_UpPOV = new POVButton(controller.inst, 0);
     private final GenericEntry autoCommandChoice;
 
     public RobotContainer() {
         autoCommandChoice = Shuffleboard.getTab("Controlls").add("chooseAutoCommand", "No Balalnce").getEntry();
-        configureButtonBindings();
+        //configureButtonBindings();
 
     }
 
@@ -74,12 +74,12 @@ final class RobotContainer {
         return controllerDriveCommand;
     }
 
-    public Command resetAllEncoders(){ // needs to be moved, not supposed to be working
-        getParallelogram().resetEncoder();
-        getGripper().resetEncoder();
-        return null;
-    }
-    private void configureButtonBindings(){
-        d_UpPOV.toggleOnTrue(resetAllEncoders());
-    }
+    // public Command resetAllEncoders(){ // needs to be moved, not supposed to be working
+    //     getParallelogram().resetEncoder();
+    //     getGripper().resetEncoder();
+    //     return null;
+    // }
+    // private void configureButtonBindings(){
+    //     d_UpPOV.toggleOnTrue(resetAllEncoders());
+    // }
 }
