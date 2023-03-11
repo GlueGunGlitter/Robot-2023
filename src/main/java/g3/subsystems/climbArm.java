@@ -11,31 +11,43 @@ import g3.utils.Controller;
 
 public class climbArm extends SubsystemBase {
     private final Controller controller;
-    private final DoubleSolenoid piston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+    private final DoubleSolenoid piston;
 
     private boolean isOpen = false;
     private NetworkTable sd;
 
     public climbArm(Controller controller, NetworkTable sd) {
+        piston = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
         this.controller = controller;
         this.sd = sd;
+        piston.set(Value.kOff);
     }
-
+    
     @Override
     public void periodic() {
         if (controller.inst.getAButtonPressed()) {
             System.out.println("pressed a");
             if (isOpen == true) {
                 System.out.println("going forward");
-                piston.set(Value.kForward);
+                forwardPiston();
+
+                
                 isOpen = false;
             }
-            if (isOpen == false) {
+            else if (isOpen == false) {
                 System.out.println("going reverse");
-                piston.set(Value.kReverse);
+                backwardPiston();
                 isOpen = true;
             }
         }
+    }
+
+    public void forwardPiston(){
+        piston.set(Value.kForward);
+    }
+
+    public void backwardPiston(){
+        piston.set(Value.kForward);
     }
 
 }
